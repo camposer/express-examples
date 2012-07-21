@@ -17,7 +17,7 @@ function impl() {
   };
 
   this.getUserById = function(id, callback) {
-    db.all("SELECT rowid AS id, name FROM user WHERE id=$id", { 'id': id }, function(err, rows) {
+    db.all("SELECT rowid AS id, name FROM user WHERE id=?", [ id ], function(err, rows) {
       if (err) 
         console.log(err);
 
