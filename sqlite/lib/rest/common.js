@@ -16,6 +16,9 @@ var nok = function(res, code) {
   res.writeHead(code, JSON_RESPONSE_HEADER);
 };
 
+/**
+ * 
+ */
 this.call = function(res, params, validate, execute) {
   if (validate(params)) {
     if (params != null) {

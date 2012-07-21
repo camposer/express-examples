@@ -15,7 +15,7 @@ with HBase or MongoDB...
 
 Let's see how this thing goes. At this point I only have one project, sqlite, which is a very simple 
 application considering a REST API, some concepts mentioned above, and persistence over a sqlite database. 
-Refer to each example README for more details.
+Refer to each example README for more details and project's wiki.
 
 Cheers,
 
