@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+	<%
+		var count = session.count;
+		if (count == null)
+			count = -1;
+		count++;
+
+		session.count = count;
+	%>
+
+	session = <%= session.count %>
+  </body>
+</html>
