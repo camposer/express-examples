@@ -1,0 +1,20 @@
+#title {
+	text-align: center;
+}
+
+#sessionCounter {
+	text-align: right;
+}
+
+#usersContainer {
+	text-align: center;	
+}
+
+#usersTable {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#addUserContainer {
+	text-align: center;		
+}

@@ -2,20 +2,57 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-	<%
-		var count = session.count;
-		if (count == null)
-			count = -1;
-		count++;
-
-		session.count = count;
-	%>
-
-	session = <%= session.count %>
+    <link rel='stylesheet' href='/stylesheets/index.css' />
+    <link type="text/css" href="/stylesheets/ui-lightness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />	
+    
+    <script src="/javascripts/common/jquery-1.7.2.js" type="text/javascript"></script>
+    <script src="/javascripts/common/jquery.tmpl.js" type="text/javascript"></script>
+	<script src="/javascripts/common/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+    <script src="/javascripts/views/index.js" type="text/javascript"></script>
+   </head>
+  <body class="ui-widget">
+    <h1 id="title"><%= title %></h1>
+	<p id="sessionCounter">
+		<%
+			var count = session.count;
+			if (count == null) 
+				count = -1;
+			
+			count++;
+			session.count = count;
+		%>
+		Session counter = <%= session.count %>
+	</p>
+	
+	<div id="usersContainer">
+		<script id="usersTemplate" type="text/x-jQuery-tmpl">
+       		<tr>
+        		<td>${id}</td>
+   	    		<td>${name}</td>
+   			</tr>
+		</script>	
+		<table id="usersTable" class="ui-widget-content">
+			<thead>
+				<tr class="ui-widget-header">
+					<th>Id</th>
+					<th>Name</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+	<p id="addUserContainer">
+		<input id="addUser" type="button" value="Add user"/>
+	</p>
+	
+	<div id="dialog-form" title="Add user">
+		<form>
+			<fieldset>
+				Name: 
+				<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
+			</fieldset>
+		</form>
+	</div>
+	
   </body>
 </html>
