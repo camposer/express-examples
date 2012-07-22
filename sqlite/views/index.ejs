@@ -14,6 +14,8 @@
     <h1 id="title"><%= title %></h1>
 	<p id="sessionCounter">
 		<%
+			// This is just for testing sessions and EJS style of programming
+			
 			var count = session.count;
 			if (count == null) 
 				count = -1;
@@ -24,35 +26,47 @@
 		Session counter = <%= session.count %>
 	</p>
 	
-	<div id="usersContainer">
-		<script id="usersTemplate" type="text/x-jQuery-tmpl">
-       		<tr>
-        		<td>${id}</td>
-   	    		<td>${name}</td>
-   			</tr>
-		</script>	
+	<script id="usersTrTemplate" type="text/x-jQuery-tmpl">
+   		<tr>
+      		<td><a>${id}</a></td>
+    		<td>${name}</td>
+    		<td><a>delete</a></td>
+		</tr>
+	</script>	
+
+	<script id="usersTableTemplate" type="text/x-jQuery-tmpl">
 		<table id="usersTable" class="ui-widget-content">
 			<thead>
 				<tr class="ui-widget-header">
 					<th>Id</th>
 					<th>Name</th>
+					<th>Operation</th>
 				</tr>
 			</thead>
 			<tbody></tbody>
 		</table>
+	</script>	
+
+	<div id="usersContainer">
 	</div>
+
 	<p id="addUserContainer">
 		<input id="addUser" type="button" value="Add user"/>
 	</p>
 	
-	<div id="dialog-form" title="Add user">
+	<div id="userForm">
+		<p id="userFormError"></p>
 		<form>
 			<fieldset>
 				Name: 
-				<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
+				<input type="text" id="userFormName" class="text ui-widget-content ui-corner-all" />
 			</fieldset>
 		</form>
 	</div>
+
+	<div id="deleteUserConfirm" title="Delete user">
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The user will be permanently deleted and cannot be recovered. Are you sure?</p>
+	</div>	
 	
   </body>
 </html>

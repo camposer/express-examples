@@ -1,21 +1,11 @@
 Summary
 =======
 
-In this space you're gonna find some examples I made for understanding Express, which is a web framework 
-(I think it could be used for more things than that) based on Node.js.
+I've been playing with Node.js for several days and started to ask myself how an application for real environments should be... This is how I got here, wanting to clarify common things/problems such as: i18n, MVC, DAO, SOA, REST, testing (xUnit style), documentation (Javadoc style), etc.
 
-So far I found very powerful technologies involved, some immature at this stage, but really promising.
+I hope this "conventions" (set of technologies and practices) help other programmers facing similar problems. 
 
-My intention is to start including concepts I think are necessary for any application which may scale and 
-be "easy" to maintain.
-
-I'm planning to include things like: DAO, Facades, Singletons, Factories, ORM, UnitTesting, Documentation, 
-Services (as in decoupling, and not WS specifically), and REST. Later, my intention is to play a little 
-with HBase or MongoDB... 
-
-Let's see how this thing goes. At this point I only have one project, sqlite, which is a very simple 
-application considering a REST API, some concepts mentioned above, and persistence over a sqlite database. 
-Refer to each example README for more details and project's wiki.
+For a complete documentation please refer to: https://github.com/camposer/express-examples/wiki
 
 Cheers,
 
