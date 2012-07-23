@@ -1,6 +1,28 @@
+/** 
+* @fileOverview User REST services facade (express-examples/sqlite)
+*
+* @author Rodolfo Campos <camposer at gmail dot com>
+* @version 1.0
+*/
+
+/** 
+ * Common REST services library
+ * @field
+ */
 var common = require('./common');
+
+/**
+ * User service (business logic)
+ * @field
+ */
 var userService = require('../service/user');
 
+/**
+ * REST facade for addUser service. PUT /rest/users
+ * @function 
+ * @param {HttpRequest} req HTTP request
+ * @param {HttpResponse} req HTTP response
+ */
 this.addUser = function(req, res) {
   var params = req.body;
 
@@ -19,6 +41,12 @@ this.addUser = function(req, res) {
   );
 };
 
+/**
+ * REST facade for getUserById service. GET /rest/users/:id 
+ * @function 
+ * @param {HttpRequest} req HTTP request
+ * @param {HttpResponse} req HTTP response
+ */
 this.getUserById = function(req, res) {
   var params = req.route.params;
 
@@ -37,6 +65,12 @@ this.getUserById = function(req, res) {
   );
 };
 
+/**
+ * REST facade for getUsers service. GET /rest/users
+ * @function 
+ * @param {HttpRequest} req HTTP request
+ * @param {HttpResponse} req HTTP response
+ */
 this.getUsers = function(req, res) {
   common.call(
     res, 
@@ -46,6 +80,12 @@ this.getUsers = function(req, res) {
   );
 };
 
+/**
+ * REST facade for removeUser service. DELETE /rest/users
+ * @function 
+ * @param {HttpRequest} req HTTP request
+ * @param {HttpResponse} req HTTP response
+ */
 this.removeUser = function(req, res) {
   var params = req.body;
 
@@ -64,6 +104,12 @@ this.removeUser = function(req, res) {
   );
 };
 
+/**
+ * REST facade for updateUser service. POST /rest/users
+ * @function 
+ * @param {HttpRequest} req HTTP request
+ * @param {HttpResponse} req HTTP response
+ */
 this.updateUser = function(req, res) {
   var params = req.body;
 
@@ -81,5 +127,3 @@ this.updateUser = function(req, res) {
     userService.newInstance().updateUser
   );
 };
-
-
