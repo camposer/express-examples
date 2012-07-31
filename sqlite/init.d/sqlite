@@ -1,0 +1,26 @@
+#!/bin/bash
+SQLITEAPP_DIR="/home/rodolfo/workspace/express-examples/sqlite"
+SQLITEAPP_LOG="$SQLITEAPP_DIR/log/sqlite.log"
+
+start() { 
+  cd $SQLITEAPP_DIR; nohup node app > $SQLITEAPP_LOG 2>&1 &
+  echo $! > $SQLITEAPP_DIR/pid 
+} 
+
+stop(){
+        kill `cat $SQLITEAPP_DIR/pid` && rm $SQLITEAPP_DIR/pid
+}
+
+case "$1" in
+start)
+        start
+        ;;
+stop)
+        stop
+        ;;
+*)
+        printf "\nUsage: $0 \n
+                start | stop            : Start or Stop sqlite app\n\n"
+        ;;
+esac
+exit 0
