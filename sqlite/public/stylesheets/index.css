@@ -1,20 +1,20 @@
-#title {
+#hTitle {
 	text-align: center;
 }
 
-#sessionCounter {
-	text-align: right;
+#pLanguageSelector {
+	text-align: center;
 }
 
-#usersContainer {
+#divUsers {
 	text-align: center;	
 }
 
-#usersTable {
+#tblUsers {
 	margin-left: auto;
 	margin-right: auto;
 }
 
-#addUserContainer {
+#divAddUser {
 	text-align: center;		
 }

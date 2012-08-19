@@ -2,34 +2,40 @@
 <html>
   <head>
     <title><%= title %></title>
+	<!-- stylesheets -->
     <link rel='stylesheet' href='/stylesheets/index.css' />
     <link type="text/css" href="/stylesheets/ui-lightness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />	
     
-    <script src="/javascripts/common/jquery-1.7.2.js" type="text/javascript"></script>
-    <script src="/javascripts/common/jquery.tmpl.js" type="text/javascript"></script>
-	<script src="/javascripts/common/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
-	<script src="/javascripts/common/jquery.i18n.js" type="text/javascript"></script>
+	<!-- externals js -->
+    <script src="/javascripts/external/jquery-1.7.2.js" type="text/javascript"></script>
+    <script src="/javascripts/external/jquery.tmpl.js" type="text/javascript"></script>
+	<script src="/javascripts/external/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+	<script src="/javascripts/external/jquery.i18n.js" type="text/javascript"></script>
 
-    <script src="/javascripts/i18n/dictionary.js" type="text/javascript"></script>
-    <script src="/javascripts/views/index.js" type="text/javascript"></script>
-   </head>
+	<!-- i18n -->
+    <script src="/javascripts/common/i18n.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		setLanguage('<%= lang %>');	
+	</script>
+
+	<!-- code behind -->
+    <script src="/javascripts/view/index.js" type="text/javascript"></script>
+  </head>
   <body class="ui-widget">
-    <h1 id="title"><%= title %></h1>
-	<p id="sessionCounter">
-		<%
-			// This is just for testing sessions and EJS style of programming
-			
-			var count = session.count;
-			if (count == null) 
-				count = -1;
-			
-			count++;
-			session.count = count;
-		%>
-		Session counter = <%= session.count %>
+    <h1 id="hTitle"><%= title %></h1>
+	<p id="pLanguageSelector">
+		<%= text.selectLanguage %>:
+		<select id="selectLanguageSelector">
+			<option value="en" <%= (lang == 'en')?"selected='selected'":'' %> >
+				<%= text.english %>
+			</option>
+			<option value="es" <%= (lang == 'es')?"selected='selected'":'' %> >
+				<%= text.spanish %>
+			</option>
+		</select>
 	</p>
 	
-	<script id="usersTrTemplate" type="text/x-jQuery-tmpl">
+	<script id="tmplUsersTr" type="text/x-jQuery-tmpl">
    		<tr>
       		<td><a>${id}</a></td>
     		<td>${name}</td>
@@ -37,8 +43,8 @@
 		</tr>
 	</script>	
 
-	<script id="usersTableTemplate" type="text/x-jQuery-tmpl">
-		<table id="usersTable" class="ui-widget-content">
+	<script id="tmplUsersTable" type="text/x-jQuery-tmpl">
+		<table id="tblUsers" class="ui-widget-content">
 			<thead>
 				<tr class="ui-widget-header">
 					<th>${id}</th>
@@ -50,25 +56,25 @@
 		</table>
 	</script>	
 
-	<div id="usersContainer">
+	<div id="divUsers">
 	</div>
 
-	<p id="addUserContainer">
-		<input id="addUser" type="button"/>
+	<p id="divAddUser">
+		<input id="btnAddUser" type="button"/>
 	</p>
 	
-	<div id="userForm">
-		<p id="userFormError"></p>
+	<div id="divUserForm">
+		<p id="pUserFormError"></p>
 		<form>
 			<fieldset>
-				<div id="userFormName"></div>
-				<input type="text" id="userFormName" class="text ui-widget-content ui-corner-all" />
+				<label id="lblUserFormName"></label>
+				<input type="text" id="inptUserFormName" class="text ui-widget-content ui-corner-all" />
 			</fieldset>
 		</form>
 	</div>
 
-	<div id="deleteUserConfirm">
-		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><div id="deleteUserConfirmMsg"></div></p>
+	<div id="divDeleteUserConfirm">
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><label id="lblDeleteUserConfirm"></label></p>
 	</div>	
 	
   </body>

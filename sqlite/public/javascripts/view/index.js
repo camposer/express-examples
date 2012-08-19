@@ -11,30 +11,45 @@
 var BUTTON_ADD_USER = 'Add user',
     BUTTON_MODIFY_USER = 'Modify user';
 
+
 /**
  * Method to be executed when the document is ready (main method)
  */
 $(document).ready(function() {
-	// Retrieving users
+	// Retrieving users and rendering
 	getUsers();
 
-	// Initializing addUser button
-	$('#addUser').button();
-	$('#addUser').click(function() { 
-		$("#userForm").dialog(userForm(BUTTON_ADD_USER)); // Have to specify which operation before openning the dialog
-		$('#userForm').dialog('open'); 
+	// Initializing language selector
+	$('#selectLanguageSelector').change(function() {
+		$.ajax({
+			type : 'POST',
+			url : '/rest/setlanguage',
+			data : {
+				'lang' : $(this).val()
+			},
+			success : function(data, textStatus, jqXHR) {
+				window.location.reload();
+			}
+		});
+	});
+
+	// Initializing btnAddUser button
+	$('#btnAddUser').button();
+	$('#btnAddUser').click(function() { 
+		$('#divUserForm').dialog(userForm(BUTTON_ADD_USER)); // Have to specify which operation before openning the dialog
+		$('#divUserForm').dialog('open'); 
 	});
 
 	// Initializing dialogs
-	$("#userForm").dialog(userForm());
-	$("#deleteUserConfirm").dialog(deleteUserConfirm());
+	$('#divUserForm').dialog(userForm());
+	$('#divDeleteUserConfirm').dialog(deleteUserConfirm());
 
-	// Initializing texts (i18n)
+	// Initializing texts (i18n) 
 	i18n();
 });
 
 /**
- * Headers to be used by jQuery Template for compiling usersTable header
+ * Headers to be used by jQuery Template for compiling tblUsers header
  * @field
  */
 var headers = {
@@ -44,10 +59,10 @@ var headers = {
 };
 
 /**
- * Retrieves users from REST API and fills usersTable. While usersTable is
+ * Retrieves users from REST API and fills tblUsers. While tblUsers is
  * compiled, links and behaviours for operations (modify and delete) are added.
  * - The data retrievement is made using jQuery, through an AJAX GET HTTP Request
- * - usersTable is filled using jQuery Template
+ * - tblUsers is filled using jQuery Template
  * @function
  */
 var getUsers = function() {
@@ -57,20 +72,20 @@ var getUsers = function() {
 		url : '/rest/users',
 		success : function(data, textStatus, jqXHR) {
 			if (data.length > 0) {
-				$("#usersContainer").html('');
-				$("#usersTableTemplate").tmpl(headers).appendTo("#usersContainer");				
-				$("#usersTrTemplate").tmpl(data).appendTo("#usersTable > tbody");
+				$('#divUsers').html('');
+				$('#tmplUsersTable').tmpl(headers).appendTo('#divUsers');
+				$('#tmplUsersTr').tmpl(data).appendTo('#tblUsers > tbody');
 				
 				// Adding operations
-				$.each($("#usersTable > tbody > tr"), function(index, value) {
+				$.each($('#tblUsers > tbody > tr'), function(index, value) {
 					// Modifying id anchor (modify operation)
 					var name = $(':nth-child(2)', this).html();
 					$(':nth-child(1) > a', this).attr('href', '#');
 					$(':nth-child(1) > a', this).click(function () {
 						var id = $(this).html();
 						
-						$("#userForm").dialog(userForm(BUTTON_MODIFY_USER, { id: id, name: name }));
-						$('#userForm').dialog('open'); 						
+						$('#divUserForm').dialog(userForm(BUTTON_MODIFY_USER, { id: id, name: name }));
+						$('#divUserForm').dialog('open'); 						
 					});
 
 					
@@ -79,14 +94,14 @@ var getUsers = function() {
 					$(':nth-child(3) > a', this).attr('href', '#'); 
 					$(':nth-child(3) > a', this).attr('name', $(':nth-child(1) > a', this).html()); 
 					$(':nth-child(3) > a', this).click(function () {
-						$("#deleteUserConfirm").dialog(deleteUserConfirm(
+						$('#divDeleteUserConfirm').dialog(deleteUserConfirm(
 								$(this).attr('name')
 							)); 
-						$('#deleteUserConfirm').dialog('open'); 
+						$('#divDeleteUserConfirm').dialog('open'); 
 					});
 				});
 			} else {
-				$("#usersContainer").html('No data');
+				$('#divUsers').html('No data');
 			}
 		},
 		statusCode : {
@@ -191,33 +206,30 @@ var deleteUser = function(id) {
  */
 var userForm = function(operation, user) { 
 	// Defining buttons using eval for i18n support
-	eval("var buttons = " + 
-		"{" + 
-			"'" + $.i18n._('Accept') + "' : function() {" +
-			"	var name = $('#userFormName').val();" +
+	var buttons = {}; // Initializing object
+	buttons[$.i18n._('Accept')] = function() {
+		var name = $('#inptUserFormName').val();
 
-			"	if (name && name.trim() != '') {" + 
-			"		if (operation == BUTTON_ADD_USER)" +
-			"			addUser(name);" +
-			"		else" + 
-			"			updateUser(user.id, name);" +
+		if (name && name.trim() != '') { 
+			if (operation == BUTTON_ADD_USER)
+				addUser(name);
+			else 
+				updateUser(user.id, name);
 						
-			"		$(this).dialog('close');" + 
-			"	} else {" + 
-			"		$('#userFormError').addClass('ui-state-error');" +
-			"		$('#userFormError').html(" +
-			"				'You have to specify a valid name'" + 
-			"		);" +
-			"	}" +
+			$(this).dialog('close'); 
+		} else { 
+			$('#pUserFormError').addClass('ui-state-error');
+			$('#pUserFormError').html($.i18n._('You have to specify a valid name'));
+		}
 
-			"	$('#userFormName').val('');" +
-			"}, " +
-			"'" + $.i18n._('Cancel') + "' : function() {" +
-			"	$('#userFormName').val('');" +
-			"	$(this).dialog('close');" +
-			"}" + 
-		"}"
-	);
+		$('#inptUserFormName').val('');
+	}; 
+
+	buttons[$.i18n._('Cancel')] = function() {
+		$('#inptUserFormName').val('');
+		$(this).dialog('close');
+	};
+
 
 	return {
 		title :  $.i18n._(operation),
@@ -227,7 +239,7 @@ var userForm = function(operation, user) {
 		modal : true,
 		open : function() {
 			if (user && user.name) 
-				$('#userFormName').val(user.name); // Initializing with user.name if its provided
+				$('#inptUserFormName').val(user.name); // Initializing with user.name if its provided
 		},
 		buttons : buttons
 	};
@@ -240,16 +252,15 @@ var userForm = function(operation, user) {
  */
 var deleteUserConfirm = function(id) {
 	// Defining buttons using eval for i18n support
-	eval("var buttons = { " +
-			"'" + $.i18n._('Delete') + "' : function() {" +
-			"	deleteUser(id);" +
-			"	$(this).dialog('close');" +
-			"}," +
-			"'" + $.i18n._('Cancel') + "' : function() {" +
-			"	$(this).dialog('close');" +
-			"}" +
-		"}"
-	);
+	var buttons = {}; // Initializing object
+	buttons[$.i18n._('Delete')] = function() {
+		deleteUser(id);
+		$(this).dialog('close');
+	};
+
+	buttons[$.i18n._('Cancel')] = function() {
+		$(this).dialog('close');
+	};
 
 	return {
 		title : $.i18n._('Delete user'),
@@ -268,7 +279,7 @@ var deleteUserConfirm = function(id) {
  * @function
  */
 var i18n = function() {
-	$('#addUser').val($.i18n._(BUTTON_ADD_USER));
-	$('#userFormName').html($.i18n._('Name') + ':');
-	$('#deleteUserConfirmMsg').html($.i18n._('The user will be permanently deleted and cannot be recovered. Are you sure?'));
+	$('#btnAddUser').val($.i18n._(BUTTON_ADD_USER));
+	$('#lblUserFormName').html($.i18n._('Name') + ':');
+	$('#lblDeleteUserConfirm').html($.i18n._('The user will be permanently deleted and cannot be recovered. Are you sure?'));
 }
