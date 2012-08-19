@@ -50,7 +50,7 @@ this.setLanguage = function(iso) {
 this._ = function(key) {
 	var value = key;
 
-	if (lang[key])
+	if (lang && lang[key])
 		value = lang[key];
 
 	return value;
